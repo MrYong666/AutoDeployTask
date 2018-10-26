@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "SyncUploadFile";
+}
+
+@*<h2>站点自动化部署工具</h2>*@
+<html>
+<br />
+<br />
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script>
+        $(function () {
+            $("#upload").click(function () {
+                $("#imgWait").show();
+                var formData = new FormData();
+                formData.append("myfile", document.getElementById("file1").files[0]);
+                $.ajax({
+                    url: "/Upload.ashx",
+                    type: "POST",
+                    data: formData,
+                    /**
+                    *必须false才会自动加上正确的Content-Type
+                    */
+                    contentType: false,
+                    /**
+                    * 必须false才会避开jQuery对 formdata 的默认处理
+                    * XMLHttpRequest会对 formdata 进行正确的处理
+                    */
+                    processData: false,
+                    success: function (data) {
+                        if (data.status == "true") {
+                            alert("上传成功！");
+                        }
+                        if (data.status == "error") {
+                            alert(data.msg);
+                        }
+                        $("#imgWait").hide();
+                    },
+                    error: function () {
+                        alert("上传失败！");
+                        $("#imgWait").hide();
+                    }
+                });
+            });
+
+            $("#publishingSite").click(function () {
+                $("#imgWait").show();
+                $.ajax({
+                    url: "/PublishingSite.ashx",
+                    type: "GET",
+                    /**
+                    *必须false才会自动加上正确的Content-Type
+                    */
+                    contentType: false,
+                    success: function (data) {
+                        if (data.status == "true") {
+                            $("#OperationLog").val(data.msg);
+                        }
+                        if (data.status == "error") {
+                            alert(data.msg);
+                        }
+                        $("#imgWait").hide();
+                    },
+                    error: function () {
+                        alert("发布失败！");
+                        $("#imgWait").hide();
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        选择文件:<input type="file" id="file1" /><br />
+        文件名格式：文件名+版本号<br />
+        <input type="button" id="upload" value="上传" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="button" id="publishingSite" value="发布" />
+        <img src="~/Image/loading.gif" style="display:none" id="imgWait" />
+    </div>
+    </br>
+    </br>
+    </br>
+    <div>
+        <textarea id="OperationLog" rows="20" cols="40">
+    </textarea>
+    </div>
+</body>
+</html>
