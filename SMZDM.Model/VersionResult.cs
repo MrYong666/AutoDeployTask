@@ -10,7 +10,7 @@ namespace SMZDM.Model
     public class VersionResult : ApiResult
     {
         /// <summary>
-        /// 文件全名
+        /// 文件全名111
         /// </summary>
         [JsonProperty("downLoadUrl")]
         public string DownLoadUrl { get; set; }
