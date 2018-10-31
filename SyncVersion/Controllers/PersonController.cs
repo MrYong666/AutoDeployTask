@@ -24,7 +24,7 @@ namespace SyncVersion.Controllers
         {
             try
             {
-                // var url = "http://172.18.9.211/api/GZip/AddPersonList";
+                // var url111 = "http://172.18.9.211/api/GZip/AddPersonList   ";
                 //var url = "http://10.200.10.40:8083/event/sync/log_test/v1?dept=clt_qd&iscap=true";
                 var url = "http://10.200.10.40:8083/event/sync/log_test/v2?dept=clt_qd&iscap=true";
                 var persons = BuildModel();
