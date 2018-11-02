@@ -29,7 +29,7 @@ namespace SyncVersion.Controllers
                 // var url = "http://10.200.10.40:8083/event/sync/log_test/v2?dept=clt_qd&iscap=true";
                 var persons = BuildModel();
                 string json = JsonConvert.SerializeObject(persons);
-                result = await GzipHelper(url, json);
+                result = GzipHelper(url, json);
             }
             catch (Exception ex)
             {
@@ -38,6 +38,24 @@ namespace SyncVersion.Controllers
             }
             return new string[] { "value1", "value2", result };
         }
+        public string GzipHelper(string url, string person)
+        {
+            string result = string.Empty;
+            GzipPost gzipPost = new GzipPost();
+            gzipPost.GzipContent = GZipHelper.GZipCompressString(person);
+            var gzipResult = HttpClientTool.HttpPost<GzipResult>(url, gzipPost);
+            result = JsonConvert.SerializeObject(gzipResult);
+            return result;
+        }
+        [HttpGet]
+        public string Stream1(int i)
+        {
+            var persons = BuildModel();
+            string json = JsonConvert.SerializeObject(persons);
+            var result = GZipHelper.GZipCompressString(json);
+            return result;
+        }
+        #region 构造参数
         public List<Person> BuildModel()
         {
             List<Person> persons = new List<Person>();
@@ -51,37 +69,6 @@ namespace SyncVersion.Controllers
             persons.Add(person1);
             return persons;
         }
-        public async Task<string> GzipHelper(string url, string person)
-        {
-            string result = string.Empty;
-            GzipPost gzipPost = new GzipPost();
-            gzipPost.GzipContent = GZipHelper.GZipCompressString(person);
-            var gzipResult = HttpClientTool.HttpPost<GzipResult>(url, gzipPost);
-            result = JsonConvert.SerializeObject(gzipResult);
-            //using (var handler = new HttpClientHandler())
-            //{
-            //    handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            //    using (var client = new HttpClient(handler, false))
-            //    {
-
-            //        var content = new StreamContent(ms);
-            //        //content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            //        //content.Headers.ContentEncoding.Add("gzip");
-            //        var response = await client.PostAsync(url, gzipPost);
-            //        var gzipResult = await response.Content.ReadAsAsync<GzipResult>();
-            //        result = JsonConvert.SerializeObject(gzipResult);
-            //    }
-            //}
-            return result;
-        }
-        [HttpGet]
-        public string Stream1(int i)
-        {
-            var persons = BuildModel();
-            string json = JsonConvert.SerializeObject(persons);
-            var result = GZipHelper.GZipCompressString(json);
-            return result;
-        }
-
+        #endregion
     }
 }

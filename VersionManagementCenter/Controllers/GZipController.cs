@@ -21,16 +21,20 @@ namespace VersionManagementCenter.Controllers
         }
         [HttpPost]
         // POST api/<controller>
-        public GzipResult AddPersonList([FromBody]HttpContent personList)
+        public GzipResult AddPersonList([FromBody]GzipPost personList)
         {
             GzipResult result = new GzipResult();
-            var request = HttpContext.Current.Request;
-            request.InputStream.Position = 0;//核心代码
-            byte[] byts = new byte[request.InputStream.Length];
-            request.InputStream.Read(byts, 0, byts.Length);
-            result.msg = GZipHelper.GZipDecompressbyte(byts);
-            result.code = "200";
+            byte[] bytes = Convert.FromBase64String(personList.GzipContent);
+            result.msg = GZipHelper.GZipDecompressbyte(bytes);
             return result;
+            #region 文件流处理方式
+            //var request = HttpContext.Current.Request;
+            //request.InputStream.Position = 0;//核心代码
+            //byte[] byts = new byte[request.InputStream.Length];
+            //request.InputStream.Read(byts, 0, byts.Length);
+            //result.msg = GZipHelper.GZipDecompressbyte(byts);
+            //result.code = "200";
+            #endregion
         }
     }
 
