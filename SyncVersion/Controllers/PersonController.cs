@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace SyncVersion.Controllers
@@ -24,9 +25,10 @@ namespace SyncVersion.Controllers
         {
             try
             {
-                var url = "http://172.18.10.28/api/GZip/AddPersonList   ";
+                //var url = "http://172.18.10.28/api/GZip/AddPersonList   ";
                 //var url = "http://10.200.10.40:8083/event/sync/log_test/v1?dept=clt_qd&iscap=true";
                 // var url = "http://10.200.10.40:8083/event/sync/log_test/v2?dept=clt_qd&iscap=true";
+                var url = "http://10.200.10.40:8083/event/sync/log_test/v4?dept=clt_qd&iscap=true";
                 var persons = BuildModel();
                 string json = JsonConvert.SerializeObject(persons);
                 result = GzipHelper(url, json);
@@ -60,7 +62,7 @@ namespace SyncVersion.Controllers
         {
             List<Person> persons = new List<Person>();
             Person person = new Person();
-            person.Name = "zhangsan";
+            person.Name = HttpUtility.UrlEncode("张三");
             person.Gender = "11";
             persons.Add(person);
             Person person1 = new Person();

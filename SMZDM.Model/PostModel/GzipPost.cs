@@ -12,7 +12,7 @@ namespace SMZDM.Model
         /// <summary>
         /// 内容
         /// </summary>
-        [JsonProperty("code")]
+        [JsonProperty("gzipContent")]
         public string GzipContent { get; set; }
     }
 }
