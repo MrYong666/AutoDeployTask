@@ -46,12 +46,15 @@
   <ItemGroup>
     <Compile Include="ApiResult.cs" />
     <Compile Include="Person.cs" />
+    <Compile Include="PostModel\GzipPost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultModel\GzipResult.cs" />
     <Compile Include="SyncVersionResult.cs" />
     <Compile Include="VersionResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

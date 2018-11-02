@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
 
-namespace SyncVersion.Result
+namespace SMZDM.Model.Result
 {
     public class GzipResult
     {

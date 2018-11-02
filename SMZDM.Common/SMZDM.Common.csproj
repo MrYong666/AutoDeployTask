@@ -49,7 +49,7 @@
     <Compile Include="HttpClientTool.cs" />
     <Compile Include="JsonTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZipHelper.cs" />
+    <Compile Include="GZipHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

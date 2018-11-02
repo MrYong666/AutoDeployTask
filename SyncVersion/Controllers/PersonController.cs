@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SMZDM.Common;
 using SMZDM.Model;
-using SyncVersion.Result;
+using SMZDM.Model.Result;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,13 +24,12 @@ namespace SyncVersion.Controllers
         {
             try
             {
-                // var url111 = "http://172.18.9.211/api/GZip/AddPersonList   ";
+                var url = "http://172.18.10.28/api/GZip/AddPersonList   ";
                 //var url = "http://10.200.10.40:8083/event/sync/log_test/v1?dept=clt_qd&iscap=true";
-                var url = "http://10.200.10.40:8083/event/sync/log_test/v2?dept=clt_qd&iscap=true";
+                // var url = "http://10.200.10.40:8083/event/sync/log_test/v2?dept=clt_qd&iscap=true";
                 var persons = BuildModel();
-                result = await GzipHelper(url, persons);
-                // result.Wait();
-                // var versionResult = HttpClientTool.HttpPost(url, persons);
+                string json = JsonConvert.SerializeObject(persons);
+                result = await GzipHelper(url, json);
             }
             catch (Exception ex)
             {
@@ -52,32 +51,37 @@ namespace SyncVersion.Controllers
             persons.Add(person1);
             return persons;
         }
-        public async Task<string> GzipHelper(string url, List<Person> person)
+        public async Task<string> GzipHelper(string url, string person)
         {
             string result = string.Empty;
-            using (var handler = new HttpClientHandler())
-            {
-                handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            GzipPost gzipPost = new GzipPost();
+            gzipPost.GzipContent = GZipHelper.GZipCompressString(person);
+            var gzipResult = HttpClientTool.HttpPost<GzipResult>(url, gzipPost);
+            result = JsonConvert.SerializeObject(gzipResult);
+            //using (var handler = new HttpClientHandler())
+            //{
+            //    handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            //    using (var client = new HttpClient(handler, false))
+            //    {
 
-                using (var client = new HttpClient(handler, false))
-                {
-                    string json = JsonConvert.SerializeObject(person);
-                    byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
-                    // byte[] jsonBytes = Encoding.GetEncoding("iso-8859-1").GetBytes(json);
-                    var ms = new MemoryStream();
-                    using (var gzip = new GZipStream(ms, CompressionMode.Compress, true))
-                    {
-                        gzip.Write(jsonBytes, 0, jsonBytes.Length);
-                    }
-                    ms.Position = 0;
-                    var content = new StreamContent(ms);
-                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    content.Headers.ContentEncoding.Add("gzip");
-                    var response = await client.PostAsync(url, content);
-                    var result11 = await response.Content.ReadAsAsync<GzipResult>();
-                }
-            }
+            //        var content = new StreamContent(ms);
+            //        //content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            //        //content.Headers.ContentEncoding.Add("gzip");
+            //        var response = await client.PostAsync(url, gzipPost);
+            //        var gzipResult = await response.Content.ReadAsAsync<GzipResult>();
+            //        result = JsonConvert.SerializeObject(gzipResult);
+            //    }
+            //}
             return result;
         }
+        [HttpGet]
+        public string Stream1(int i)
+        {
+            var persons = BuildModel();
+            string json = JsonConvert.SerializeObject(persons);
+            var result = GZipHelper.GZipCompressString(json);
+            return result;
+        }
+
     }
 }

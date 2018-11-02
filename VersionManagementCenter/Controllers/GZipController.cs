@@ -1,5 +1,6 @@
 ﻿using SMZDM.Common;
 using SMZDM.Model;
+using SMZDM.Model.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +21,16 @@ namespace VersionManagementCenter.Controllers
         }
         [HttpPost]
         // POST api/<controller>
-        public string AddPersonList([FromBody]HttpContent personList)
+        public GzipResult AddPersonList([FromBody]HttpContent personList)
         {
+            GzipResult result = new GzipResult();
             var request = HttpContext.Current.Request;
             request.InputStream.Position = 0;//核心代码
             byte[] byts = new byte[request.InputStream.Length];
             request.InputStream.Read(byts, 0, byts.Length);
-            var dd1 = ZipHelper.GZipDecompressbyte(byts);
-            return "Ok";
+            result.msg = GZipHelper.GZipDecompressbyte(byts);
+            result.code = "200";
+            return result;
         }
     }
 
