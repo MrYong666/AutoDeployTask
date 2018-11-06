@@ -29,8 +29,9 @@ namespace SyncVersion.Controllers
                 //var url = "http://10.200.10.40:8083/event/sync/log_test/v1?dept=clt_qd&iscap=true";
                 // var url = "http://10.200.10.40:8083/event/sync/log_test/v2?dept=clt_qd&iscap=true";
                 var url = "http://10.200.10.40:8083/event/sync/log_test/v4?dept=clt_qd&iscap=true";
-                var persons = BuildModel();
-                string json = JsonConvert.SerializeObject(persons);
+                //var persons = BuildModel();
+                //string json = JsonConvert.SerializeObject(persons);
+                var json = BuildModelTxt();
                 result = GzipHelper(url, json);
             }
             catch (Exception ex)
@@ -71,6 +72,12 @@ namespace SyncVersion.Controllers
             persons.Add(person1);
             return persons;
         }
+        public static string BuildModelTxt()
+        {
+            string text = System.IO.File.ReadAllText(@"E:\AutoDeployTask\SyncVersion\File\测试jsonFirst.txt");
+            return text;
+        }
+
         #endregion
     }
 }
