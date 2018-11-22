@@ -25,10 +25,10 @@ namespace SyncVersion.Controllers
         {
             try
             {
-                //var url = "http://172.18.10.28/api/GZip/AddPersonList   ";
+                var url = "http://172.18.10.28/api/GZip/AddPersonList";
                 //var url = "http://10.200.10.40:8083/event/sync/log_test/v1?dept=clt_qd&iscap=true";
                 // var url = "http://10.200.10.40:8083/event/sync/log_test/v2?dept=clt_qd&iscap=true";
-                var url = "http://10.200.10.40:8083/event/sync/log_test/v4?dept=clt_qd&iscap=true";
+                //var url = "http://10.200.10.40:8083/event/sync/log_test/v4?dept=clt_qd&iscap=true";
                 //var persons = BuildModel();
                 //string json = JsonConvert.SerializeObject(persons);
                 var json = BuildModelTxt();
